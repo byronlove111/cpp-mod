@@ -51,7 +51,7 @@ static int readIndex(const std::string &message, int limit) {
     if (index <= limit && index > 0) {
       valid_input = true;
     } else {
-      std::cout << "Invalid index" << '\n';
+      std::cout << "Invalid index, please try again." << '\n';
     }
   }
   return index;

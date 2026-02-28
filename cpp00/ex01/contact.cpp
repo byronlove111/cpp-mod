@@ -31,5 +31,5 @@ void Contact::printContact() {
   std::cout << "Last Name : " << last_name << '\n';
   std::cout << "Nickname : " << nickname << '\n';
   std::cout << "Phone Number : " << phone_number << '\n';
-  std::cout << "Darkest secret : " << darkest_secret << '\n' << '\n';
+  std::cout << "Darkest Secret : " << darkest_secret << '\n' << '\n';
 }
