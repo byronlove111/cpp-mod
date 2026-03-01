@@ -5,18 +5,22 @@ NAME = zombie
 
 SRCS = main.cpp newZombie.cpp Zombie.cpp randomChump.cpp
 
-OBJS = $(SRCS:.cpp=.o)
+OBJDIR = obj
+OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.cpp=.o))
 
-all: $(NAME)
+all: $(OBJDIR) $(NAME)
+
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
 
 $(NAME): $(OBJS)
 	$(CXX) $(OBJS) -o $(NAME)
 
-%.o: %.cpp
+$(OBJDIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
