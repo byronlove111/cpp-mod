@@ -5,5 +5,7 @@ void Zombie::announce(void) {
   std::cout << getName() << ": BraiiiiiiinnnzzzZ..." << '\n';
 }
 
+Zombie::~Zombie() { std::cout << name << " is dead..." << '\n'; }
+
 std::string Zombie::getName() { return name; }
 void Zombie::setName(std::string new_name) { name = new_name; }
