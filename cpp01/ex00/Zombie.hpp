@@ -8,4 +8,5 @@ private:
 public:
   void announce(void);
   std::string getName();
+  void setName(std::string new_name);
 };
