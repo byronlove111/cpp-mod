@@ -1,8 +1,8 @@
 #include "Zombie.hpp"
 
 int main() {
-  Zombie z;
-
-  z.setName("Zombie");
-  z.announce();
+  Zombie *zombie = newZombie("Malik");
+  zombie->announce();
+  randomChump("Noah");
+  delete zombie;
 }
