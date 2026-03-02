@@ -10,6 +10,6 @@ void HumanB::attack() {
   if (weapon) {
     std::cout << name << " attacks with their " << weapon->getType() << '\n';
   } else {
-    std::cout << name << " don't have weapons" << '\n';
+    std::cout << name << " doesn't have a weapon" << '\n';
   }
 }
