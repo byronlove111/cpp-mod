@@ -1,22 +1,26 @@
 CXX = c++
-FLAGS = -Wall -Werror -Wextra -std=c++98
-
-SRCS = main.cpp
-
-OBJS = $(SRCS:.cpp=.o)
+CFLAGS = -Wall -Werror -Wextra -std=c++98
 
 NAME = a.out
 
-all: $(NAME)
+SRCS = main.cpp
+
+OBJDIR = obj
+OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.cpp=.o))
+
+all: $(OBJDIR) $(NAME)
+
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
 
 $(NAME): $(OBJS)
 	$(CXX) $(OBJS) -o $(NAME)
 
-%.o: %.cpp
-	$(CXX) $(FLAGS) -c $< -o $@
+$(OBJDIR)/%.o: %.cpp
+	$(CXX) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
