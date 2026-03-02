@@ -45,7 +45,7 @@ int main(int ac, char *av[]) {
   std::string line;
   while (getline(raw_file, line)) {
     replace_str(line, str_to_replace, new_str);
-    replace_file << line;
+    replace_file << line << '\n';
   }
 
   return (0);
