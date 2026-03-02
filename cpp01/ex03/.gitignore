@@ -1,4 +1,5 @@
 *.o
 *.a
 obj/
+tmp/
 a.out
