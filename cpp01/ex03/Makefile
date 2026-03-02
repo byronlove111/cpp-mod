@@ -1,22 +1,26 @@
 CXX = c++
-FLAGS = -Werror -Wextra -Wall -std=c++98
+CFLAGS = -Werror -Wextra -Wall -std=c++98
 
 SRCS = HumanA.cpp HumanB.cpp Weapon.cpp main.cpp
 
-OBJS = $(SRCS:.cpp=.o)
+OBJDIR = obj
+OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.cpp=.o))
 
 NAME = a.out
 
-all: $(NAME)
+all: $(OBJDIR) $(NAME)
+
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
 
 $(NAME): $(OBJS)
 	$(CXX) $(OBJS) -o $(NAME)
 
-%.o: %.cpp
-	$(CXX) $(FLAGS) -c $< -o $@
+$(OBJDIR)/%.o: %.cpp
+	$(CXX) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
