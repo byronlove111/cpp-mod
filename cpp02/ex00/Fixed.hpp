@@ -3,7 +3,7 @@
 
 class Fixed {
 private:
-  int bits_value;
+  int fixed_point_value;
   const static int fractional_value;
 
 public:
