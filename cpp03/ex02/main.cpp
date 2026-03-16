@@ -32,7 +32,7 @@ int main(void) {
   printSeparator("Edge case: FragTrap drains all energy (100 points)");
   {
     FragTrap exhausted("Tired");
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < 102; i++)
       exhausted.attack("Dummy");
     exhausted.beRepaired(5);
   }
