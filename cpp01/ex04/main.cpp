@@ -30,15 +30,15 @@ int main(int ac, char *av[]) {
   std::string new_str = av[3];
 
   if (!raw_file) {
-    std::cout << "Error : Unable to open file1: " << av[1] << '\n';
+    std::cout << "Error : Unable to open file: " << av[1] << '\n';
+    return (1);
+  }
+  if (!replace_file) {
+    std::cout << "Error : Unable to create file: " << replace_name << '\n';
     return (1);
   }
   if (str_to_replace.empty()) {
     std::cout << "Error : s1 is empty" << '\n';
-    return (1);
-  }
-  if (new_str.empty()) {
-    std::cout << "Error : s2 is empty" << '\n';
     return (1);
   }
 
