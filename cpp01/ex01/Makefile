@@ -1,5 +1,5 @@
 CXX = c++
-CFLAGS = -Wall -Werror -Wextra -std=c++98
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98
 
 NAME = horde
 
@@ -17,7 +17,7 @@ $(NAME): $(OBJS)
 	$(CXX) $(OBJS) -o $(NAME)
 
 $(OBJDIR)/%.o: %.cpp
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
 	rm -rf $(OBJDIR)
