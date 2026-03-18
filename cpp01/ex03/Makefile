@@ -1,5 +1,5 @@
 CXX = c++
-CFLAGS = -Werror -Wextra -Wall -std=c++98
+CXXFLAGS = -Werror -Wextra -Wall -std=c++98
 
 SRCS = HumanA.cpp HumanB.cpp Weapon.cpp main.cpp
 
@@ -17,7 +17,7 @@ $(NAME): $(OBJS)
 	$(CXX) $(OBJS) -o $(NAME)
 
 $(OBJDIR)/%.o: %.cpp
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
 	rm -rf $(OBJDIR)
