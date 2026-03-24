@@ -88,14 +88,14 @@ int main() {
 
   printSeparator("Tableau d'animaux");
   {
-    Animal *table[100];
-    for (int i = 0; i < 50; i++) {
+    Animal *table[10];
+    for (int i = 0; i < 5; i++) {
       table[i] = new Dog();
     }
-    for (int i = 50; i <= 100; i++) {
+    for (int i = 5; i < 10; i++) {
       table[i] = new Cat();
     }
-    for (int i = 0; i <= 100; i++) {
+    for (int i = 0; i < 10; i++) {
       delete table[i];
     }
   }
