@@ -86,5 +86,28 @@ int main() {
       delete animals[i];
   }
 
+  printSeparator("Tableau d'animaux");
+  {
+    Animal *table[100];
+    for (int i = 0; i < 50; i++) {
+      table[i] = new Dog();
+    }
+    for (int i = 50; i <= 100; i++) {
+      table[i] = new Cat();
+    }
+    for (int i = 0; i <= 100; i++) {
+      delete table[i];
+    }
+  }
+
+  printSeparator("Deep copy");
+  {
+    Dog myDog;
+    myDog.getBrain()->setIdea("Je veux manger", 0);
+    Dog secondDog(myDog);
+    secondDog.getBrain()->setIdea("Je veux boire", 0);
+    std::cout << "First dog idea : " << myDog.getBrain()->getIdea(0) << std::endl;
+    std::cout << "Second dog idea : " << secondDog.getBrain()->getIdea(0) << std::endl;
+  }
   return 0;
 }
