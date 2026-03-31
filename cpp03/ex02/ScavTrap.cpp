@@ -14,23 +14,23 @@ ScavTrap::ScavTrap(const std::string &name) : ClapTrap(name) {
   _hitPoints = 100;
   _energyPoints = 50;
   _attackDamage = 20;
-  std::cout << "ScavTrap constructed !" << '\n';
+  std::cout << "ScavTrap " << _name << " constructed!" << '\n';
 }
 
 ScavTrap::ScavTrap(const ScavTrap &other) : ClapTrap(other) {
-  std::cout << "ScavTrap copy constructed !" << '\n';
+  std::cout << "ScavTrap " << _name << " copy constructed!" << '\n';
 }
 
 ScavTrap &ScavTrap::operator=(const ScavTrap &other) {
   if (this != &other) {
     ClapTrap::operator=(other);
-    std::cout << "ScavTrap assigned !" << '\n';
+    std::cout << "ScavTrap " << _name << " assigned!" << '\n';
   }
   return *this;
 }
 
 ScavTrap::~ScavTrap() {
-  std::cout << "ScavTrap destructed !" << '\n';
+  std::cout << "ScavTrap " << _name << " destructed!" << '\n';
 }
 
 void ScavTrap::attack(const std::string &target) {
