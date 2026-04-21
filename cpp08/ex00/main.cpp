@@ -6,7 +6,8 @@
 template <typename T>
 void test(const T &container, int value) {
   try {
-    std::cout << "find(" << value << ") -> " << easyfind(container, value) << std::endl;
+    int result = easyfind(container, value);
+    std::cout << "find(" << value << ") -> " << result << std::endl;
   } catch (std::exception &e) {
     std::cout << "find(" << value << ") -> " << e.what() << std::endl;
   }
