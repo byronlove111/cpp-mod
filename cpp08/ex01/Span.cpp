@@ -38,18 +38,18 @@ int Span::shortestSpan() const {
     throw Span::NotEnoughNumbersException();
   std::vector<int> sorted(_numbers);
   std::sort(sorted.begin(), sorted.end());
-  int shortest = sorted[1] - sorted[0];
-  for (size_t i = 1; i < sorted.size() - 1; i++)
-    shortest = std::min(shortest, sorted[i + 1] - sorted[i]);
+  std::vector<int> diffs(sorted.size());
+  std::adjacent_difference(sorted.begin(), sorted.end(), diffs.begin());
+  int shortest = *std::min_element(diffs.begin() + 1, diffs.end());
   return shortest;
 }
 
 int Span::longestSpan() const {
   if (_numbers.size() < 2)
     throw Span::NotEnoughNumbersException();
-  std::vector<int> sorted(_numbers);
-  std::sort(sorted.begin(), sorted.end());
-  return sorted.back() - sorted.front();
+  int max = *std::max_element(_numbers.begin(), _numbers.end());
+  int min = *std::min_element(_numbers.begin(), _numbers.end());
+  return max - min;
 }
 
 const char *Span::MaxCapacityException::what() const throw() {

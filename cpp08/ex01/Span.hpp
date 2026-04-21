@@ -2,6 +2,7 @@
 #define SPAN_HPP
 
 #include <algorithm>
+#include <numeric>
 #include <stdexcept>
 #include <vector>
 
