@@ -65,10 +65,9 @@ bool BitcoinExchange::init(const std::string& csvPath)
     if (!file.is_open())
         return false;
     std::string line;
-    bool        skipHeader = true;
+    std::getline(file, line);
     while (std::getline(file, line))
     {
-        if (skipHeader) { skipHeader = false; continue; }
         size_t commaPos = line.find(',');
         if (commaPos == std::string::npos)
             continue;
@@ -80,7 +79,9 @@ bool BitcoinExchange::init(const std::string& csvPath)
             continue;
         _db[date] = rate;
     }
-    return !_db.empty();
+    if (_db.empty())
+        return false;
+    return true;
 }
 
 void BitcoinExchange::processInput(const std::string& inputPath) const
@@ -92,6 +93,7 @@ void BitcoinExchange::processInput(const std::string& inputPath) const
         return;
     }
     std::string line;
+    std::getline(file, line);
     while (std::getline(file, line))
     {
         if (line.empty())
@@ -106,9 +108,6 @@ void BitcoinExchange::processInput(const std::string& inputPath) const
 
         std::string date   = stripWhitespace(line.substr(0, sepPos));
         std::string valStr = stripWhitespace(line.substr(sepPos + 3));
-
-        if (date == "date")
-            continue;
         if (!isValidDate(date))
         {
             std::cout << "Error: bad input => " << line << std::endl;
