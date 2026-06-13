@@ -23,26 +23,39 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other)
 
 PmergeMe::~PmergeMe() {}
 
+// implementation de la formule jacobshtal en code
 static std::vector<size_t> computeJacobsthalOrder(size_t numPairs)
 {
     std::vector<size_t> insertionOrder;
     if (numPairs == 0)
         return insertionOrder;
 
+    // vector qui calcule les delimitations entre les paires
     std::vector<size_t> jacobsthal;
     jacobsthal.push_back(1);
     if (numPairs > 1)
         jacobsthal.push_back(3);
     while (jacobsthal.back() < numPairs)
     {
+        // la formule == chaque nombre = nombre precedent + 2 * nombre avant le precedent
+        // ex : on a deja [1, 3], on calcule 3 + 2*1 = 5, puis 5 + 2*3 = 11 ect
+        // on continue jusqu'a ce que le dernier nombre depasse le nombre de paires
         size_t last       = jacobsthal[jacobsthal.size() - 1];
         size_t secondLast = jacobsthal[jacobsthal.size() - 2];
         jacobsthal.push_back(last + 2 * secondLast);
     }
 
+    // on parcourt chaque groupe defini par les bornes de jacobsthal.
+    // dans chaque groupe, on ajoute les indices de paires de droite a gauche
+    // (du plus grand index vers le plus petit) car c'est l'ordre optimal de jacobsthal
+    // previousGroupEnd marque la frontiere gauche du groupe courant
+    // la paire 0 etant deja inseree gratuitement on part de 0
     size_t previousGroupEnd = 0;
     for (size_t groupIndex = 1; groupIndex < jacobsthal.size(); groupIndex++)
     {
+        // jacobsthal stocke des valeurs comme 3, 5, 11
+        // on soustrait 1 pour convertir en indice de paire (les paires sont numerotees a partir de 0)
+        // si ce groupe theorique depasse les paires qu'on a vraiment, on s'arrete a la derniere paire disponible
         size_t rawGroupEnd     = jacobsthal[groupIndex] - 1;
         size_t currentGroupEnd;
         if (rawGroupEnd < numPairs - 1)
@@ -50,6 +63,7 @@ static std::vector<size_t> computeJacobsthalOrder(size_t numPairs)
         else
             currentGroupEnd = numPairs - 1;
 
+        // on insere les indices du groupe de droite a gauche dans insertionOrder
         for (size_t index = currentGroupEnd; index > previousGroupEnd; index--)
             insertionOrder.push_back(index);
 
@@ -57,6 +71,7 @@ static std::vector<size_t> computeJacobsthalOrder(size_t numPairs)
         if (previousGroupEnd >= numPairs - 1)
             break;
     }
+    // ex : 5 paires  = [2, 1, 4, 3] pour l'ordre d'insertion
     return insertionOrder;
 }
 
@@ -64,12 +79,14 @@ static size_t lowerBoundVec(const std::vector<int>& chain, size_t rangeStart, si
 {
     while (rangeStart < rangeEnd)
     {
+        // on calcule le milieu ainsi pour eviter un overflow si rangeStart + rangeEnd depasse SIZE_MAX
         size_t midpoint = rangeStart + (rangeEnd - rangeStart) / 2;
         if (chain[midpoint] < value)
-            rangeStart = midpoint + 1;
+            rangeStart = midpoint + 1; // la valeur est dans la moitie droite
         else
-            rangeEnd = midpoint;
+            rangeEnd = midpoint;       // la valeur est dans la moitie gauche
     }
+    // quand rangeStart == rangeEnd, la zone est vide : rangeStart est la position exacte d'insertion
     return rangeStart;
 }
 
@@ -97,18 +114,27 @@ void PmergeMe::fordJohnsonVec(std::vector<int>& arr)
             pairs.push_back(std::make_pair(right, left));
     }
 
+    // on extrait les grands de chaque paire et on les trie recursivement
     std::vector<int> mainElements;
     for (size_t i = 0; i < pairs.size(); i++)
         mainElements.push_back(pairs[i].first);
     fordJohnsonVec(mainElements);
+    // apres la recursion, mainElements est trie - on retrie pairs par leur grand
+    // pour que pairs[i] corresponde a mainElements[i] et que le lien grand/petit soit conserve
     std::sort(pairs.begin(), pairs.end());
 
+    // sortedChain est la chaine dans laquelle on va inserer les petits un par un
+    // mainPositions suit la position actuelle de chaque grand dans sortedChain
+    // (les grands se decalent a droite a chaque insertion d'un petit)
     std::vector<int>    sortedChain(mainElements);
     std::vector<size_t> mainPositions(numPairs);
     for (size_t i = 0; i < numPairs; i++)
         mainPositions[i] = i;
 
+    // le petit de la paire 0 est insere gratuitement au debut : il est forcement
+    // plus petit que tous les grands car son grand est le plus petit de tous
     sortedChain.insert(sortedChain.begin(), pairs[0].second);
+    // tous les grands se sont decales d'une position vers la droite
     for (size_t i = 0; i < numPairs; i++)
         mainPositions[i]++;
 
@@ -117,9 +143,12 @@ void PmergeMe::fordJohnsonVec(std::vector<int>& arr)
     {
         size_t pairIndex    = insertionOrder[step];
         int    pendingValue = pairs[pairIndex].second;
+        // on cherche la position d'insertion uniquement avant le grand de cette paire
+        // car le petit est forcement plus petit que son grand (etabli lors du pairing)
         size_t pos          = lowerBoundVec(sortedChain, 0, mainPositions[pairIndex], pendingValue);
 
         sortedChain.insert(sortedChain.begin() + static_cast<long>(pos), pendingValue);
+        // tous les grands a partir de la position d'insertion se sont decales d'une position
         for (size_t i = 0; i < mainPositions.size(); i++)
         {
             if (mainPositions[i] >= pos)
@@ -127,12 +156,14 @@ void PmergeMe::fordJohnsonVec(std::vector<int>& arr)
         }
     }
 
+    // le retardataire n'a pas de grand associe : on cherche dans toute la chaine
     if (hasOddElement)
     {
         size_t pos = lowerBoundVec(sortedChain, 0, sortedChain.size(), oddElement);
         sortedChain.insert(sortedChain.begin() + static_cast<long>(pos), oddElement);
     }
 
+    // on ecrase arr avec le resultat trie (arr est passe par reference, le niveau appelant recupere le tri)
     arr = sortedChain;
 }
 
